@@ -53,3 +53,75 @@ using ByteTrack — trained on the VisDrone 2019 dataset.
 ---
 
 ## 📁 Project Structure
+├── drone_detection.ipynb        # Full pipeline notebook
+├── outputs/
+│   ├── sample_visualization.png
+│   ├── multi_sample_visualization.png
+│   ├── final_results_grid.png
+│   └── tracking_visualization.png
+└── README.md
+
+---
+
+## ⚙️ Setup & Run
+
+```bash
+pip install ultralytics
+```
+
+### Run Detection
+```python
+from ultralytics import YOLO
+model = YOLO('best.pt')
+results = model('your_image.jpg', conf=0.25)
+results[0].show()
+```
+
+### Run Tracking
+```python
+results = model.track(
+    source='your_video.mp4',
+    tracker='bytetrack.yaml',
+    conf=0.25
+)
+```
+
+---
+
+## 📈 Sample Results
+
+### Detection Output
+![Detection Results](outputs/final_results_grid.png)
+
+### Tracking Output
+![Tracking Results](outputs/tracking_visualization.png)
+
+### Dataset Samples
+![Dataset Samples](outputs/multi_sample_visualization.png)
+
+---
+
+## ✅ Strengths
+- Fast inference (~2ms/image on GPU)
+- Excellent car detection (69.9% mAP@50)
+- Handles dense crowd scenes (103 humans counted)
+- ByteTrack integration for multi-object tracking
+
+## ⚠️ Limitations
+- Small object detection is weak (bicycle 4.2%)
+- More epochs or larger model would improve recall
+- Night images remain challenging
+
+## 🔧 Challenges Faced
+- VisDrone yaml path mismatch with Ultralytics
+- Colab session resets losing trained weights
+- Only 9 frames in one drone sequence for tracking demo
+
+---
+
+## 📦 Tools Used
+- YOLOv8n (Ultralytics)
+- ByteTrack (built-in tracker)
+- OpenCV, Matplotlib
+- Google Colab (T4 GPU)
+- VisDrone 2019 Dataset
